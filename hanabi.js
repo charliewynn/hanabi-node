@@ -4,6 +4,10 @@ module.exports.getVal = function()
 {
 	return val;
 }
+module.exports.dec = function(){
+	val--;
+	return val;
+}
 
 module.exports.inc = function(){
 	val++;

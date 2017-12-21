@@ -1,4 +1,4 @@
-const hanabi = require('../hanabi');
+const hanabi = require('../source/hanabi');
 
 module.exports = {
 	setUp: function (cb) {

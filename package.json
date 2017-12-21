@@ -2,7 +2,7 @@
   "name": "hanabi-node",
   "version": "1.0.0",
   "description": "node module for hanabi",
-  "main": "./build/hanabi.js",
+  "main": "./dist/hanabi.js",
   "scripts": {
     "test": "nodeunit",
     "build": "babel source --presets babel-preset-es2015 --out-dir dist"

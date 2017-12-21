@@ -17,6 +17,11 @@ module.exports.loadGame = function(gameToLoad){
 		throw "there seems to already be a game on this object - you probably didn't mean to run createGame";
 	}
 	game = gameToLoad;
+	return {
+		whosTurn : game.whosTurn,
+		players: game.players.map(p => { return { name: p.name, id: p.id }; }),
+		id: game.id
+	};
 };
 
 module.exports.discard = function(playerId, cardId){
@@ -174,6 +179,7 @@ module.exports.createGame = function ({ playerNames }) {
 	//only return enough data for the user to send links out.
 	//the dev will need to call getGame() and save that to the database..
 	return {
+		whosTurn : game.whosTurn,
 		players: game.players.map(p => { return { name: p.name, id: p.id }; }),
 		id: game.id
 	};

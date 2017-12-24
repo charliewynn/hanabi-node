@@ -71,6 +71,7 @@ module.exports.getPlayerGameState = function(playerid){
 		};
 		for(const c of player.hand){
 			let card = {
+					id : c.id,
 					color : c.color,
 					number : c.number,
 					notColors : c.notColors,

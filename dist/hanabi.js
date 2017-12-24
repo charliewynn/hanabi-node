@@ -97,6 +97,7 @@ module.exports.getPlayerGameState = function (playerid) {
 					var c = _step2.value;
 
 					var card = {
+						id: c.id,
 						color: c.color,
 						number: c.number,
 						notColors: c.notColors,

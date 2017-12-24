@@ -66,15 +66,24 @@ module.exports.getPlayerGameState = function(playerid){
 	console.log(game.players);
 	for(var player of game.players){
 		let partialPlayer = {
-			name : player.name
+			name : player.name,
+			hand : []
 		};
-		partialPlayer.hand = player.hand.map(c=>{
+		for(const c of player.hand){
+			let card = {
+					color : c.color,
+					number : c.number,
+					notColors : c.notColors,
+					notNumbers : c.notNumbers,
+					colors : c.colors,
+					numbers : c.numbers
+			};
 			if(player.id === playerid){
-				c.color = undefined;
-				c.number = undefined;
+				card.color = undefined;
+				card.number = undefined;
 			}
-			return c;
-		});
+			partialPlayer.hand.push(card);
+		}
 		if(player.id === playerid){ partialPlayer.you = true; }
 		partialGame.players.push(partialPlayer);
 	}

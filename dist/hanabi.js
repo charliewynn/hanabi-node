@@ -85,15 +85,46 @@ module.exports.getPlayerGameState = function (playerid) {
 			var player = _step.value;
 
 			var partialPlayer = {
-				name: player.name
+				name: player.name,
+				hand: []
 			};
-			partialPlayer.hand = player.hand.map(function (c) {
-				if (player.id === playerid) {
-					c.color = undefined;
-					c.number = undefined;
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
+
+			try {
+				for (var _iterator2 = player.hand[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					var c = _step2.value;
+
+					var card = {
+						color: c.color,
+						number: c.number,
+						notColors: c.notColors,
+						notNumbers: c.notNumbers,
+						colors: c.colors,
+						numbers: c.numbers
+					};
+					if (player.id === playerid) {
+						card.color = undefined;
+						card.number = undefined;
+					}
+					partialPlayer.hand.push(card);
 				}
-				return c;
-			});
+			} catch (err) {
+				_didIteratorError2 = true;
+				_iteratorError2 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion2 && _iterator2.return) {
+						_iterator2.return();
+					}
+				} finally {
+					if (_didIteratorError2) {
+						throw _iteratorError2;
+					}
+				}
+			}
+
 			if (player.id === playerid) {
 				partialPlayer.you = true;
 			}
@@ -132,13 +163,13 @@ module.exports.adviseColor = function (advisor, to, colorOrNum) {
 	}
 	game.advice--;
 	var adviceCards = game.players[to].hand;
-	var _iteratorNormalCompletion2 = true;
-	var _didIteratorError2 = false;
-	var _iteratorError2 = undefined;
+	var _iteratorNormalCompletion3 = true;
+	var _didIteratorError3 = false;
+	var _iteratorError3 = undefined;
 
 	try {
-		for (var _iterator2 = adviceCards[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-			var card = _step2.value;
+		for (var _iterator3 = adviceCards[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+			var card = _step3.value;
 
 			if (Number.isInteger(colorOrNum)) {
 				if (card.number === colorOrNum) {
@@ -155,16 +186,16 @@ module.exports.adviseColor = function (advisor, to, colorOrNum) {
 			}
 		}
 	} catch (err) {
-		_didIteratorError2 = true;
-		_iteratorError2 = err;
+		_didIteratorError3 = true;
+		_iteratorError3 = err;
 	} finally {
 		try {
-			if (!_iteratorNormalCompletion2 && _iterator2.return) {
-				_iterator2.return();
+			if (!_iteratorNormalCompletion3 && _iterator3.return) {
+				_iterator3.return();
 			}
 		} finally {
-			if (_didIteratorError2) {
-				throw _iteratorError2;
+			if (_didIteratorError3) {
+				throw _iteratorError3;
 			}
 		}
 	}
@@ -195,20 +226,20 @@ module.exports.createGame = function (_ref) {
 
 	game.id = new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
 	var deck = [];
-	var _iteratorNormalCompletion3 = true;
-	var _didIteratorError3 = false;
-	var _iteratorError3 = undefined;
+	var _iteratorNormalCompletion4 = true;
+	var _didIteratorError4 = false;
+	var _iteratorError4 = undefined;
 
 	try {
-		for (var _iterator3 = colors[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-			var color = _step3.value;
-			var _iteratorNormalCompletion4 = true;
-			var _didIteratorError4 = false;
-			var _iteratorError4 = undefined;
+		for (var _iterator4 = colors[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+			var color = _step4.value;
+			var _iteratorNormalCompletion5 = true;
+			var _didIteratorError5 = false;
+			var _iteratorError5 = undefined;
 
 			try {
-				for (var _iterator4 = numbers[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-					var number = _step4.value;
+				for (var _iterator5 = numbers[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+					var number = _step5.value;
 
 					deck.push({
 						color: color,
@@ -220,31 +251,31 @@ module.exports.createGame = function (_ref) {
 					});
 				}
 			} catch (err) {
-				_didIteratorError4 = true;
-				_iteratorError4 = err;
+				_didIteratorError5 = true;
+				_iteratorError5 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion4 && _iterator4.return) {
-						_iterator4.return();
+					if (!_iteratorNormalCompletion5 && _iterator5.return) {
+						_iterator5.return();
 					}
 				} finally {
-					if (_didIteratorError4) {
-						throw _iteratorError4;
+					if (_didIteratorError5) {
+						throw _iteratorError5;
 					}
 				}
 			}
 		}
 	} catch (err) {
-		_didIteratorError3 = true;
-		_iteratorError3 = err;
+		_didIteratorError4 = true;
+		_iteratorError4 = err;
 	} finally {
 		try {
-			if (!_iteratorNormalCompletion3 && _iterator3.return) {
-				_iterator3.return();
+			if (!_iteratorNormalCompletion4 && _iterator4.return) {
+				_iterator4.return();
 			}
 		} finally {
-			if (_didIteratorError3) {
-				throw _iteratorError3;
+			if (_didIteratorError4) {
+				throw _iteratorError4;
 			}
 		}
 	}

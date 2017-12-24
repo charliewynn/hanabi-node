@@ -237,7 +237,7 @@ module.exports.play = function(playerId, cardId){
 		throw "That card doesn't belong to player who's turn it is";
 	}
 	const cardIndex = whosTurn.hand.findIndex(c=>c.id === cardId);
-	const card = whosTurn.hand.splice(cardIndex,1);
+	const card = whosTurn.hand.splice(cardIndex,1)[0];
 
 	if(game.played[card.color] === card.number-1){
 		//card plays!

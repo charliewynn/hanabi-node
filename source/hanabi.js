@@ -45,7 +45,8 @@ module.exports.discard = function(playerId, cardId){
 
 	game.advice++;
 	const cardIndex = whosTurn.hand.findIndex(c=>c.id === cardId);
-	const card = whosTurn.hand.splice(cardIndex,1);
+	const card = whosTurn.hand.splice(cardIndex,1)[0];
+	//add to message, hcarlie discarded a card.color, card.number
 	dealCardToPlayer(whosTurn);
 	nextTurn();
 };

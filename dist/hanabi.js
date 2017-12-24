@@ -55,7 +55,8 @@ module.exports.discard = function (playerId, cardId) {
 	var cardIndex = whosTurn.hand.findIndex(function (c) {
 		return c.id === cardId;
 	});
-	var card = whosTurn.hand.splice(cardIndex, 1);
+	var card = whosTurn.hand.splice(cardIndex, 1)[0];
+	//add to message, hcarlie discarded a card.color, card.number
 	dealCardToPlayer(whosTurn);
 	nextTurn();
 };
@@ -363,7 +364,7 @@ module.exports.play = function (playerId, cardId) {
 	var cardIndex = whosTurn.hand.findIndex(function (c) {
 		return c.id === cardId;
 	});
-	var card = whosTurn.hand.splice(cardIndex, 1);
+	var card = whosTurn.hand.splice(cardIndex, 1)[0];
 
 	if (game.played[card.color] === card.number - 1) {
 		//card plays!

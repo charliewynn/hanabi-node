@@ -46,6 +46,9 @@ module.exports.discard = function(playerId, cardId){
 	game.advice++;
 	const cardIndex = whosTurn.hand.findIndex(c=>c.id === cardId);
 	const card = whosTurn.hand.splice(cardIndex,1)[0];
+	game.players[game.whosTurn].lastMove = ["Discard", card];
+	game.lastMove = ["Discard", card, game.players[game.whosTurn].name];
+	game.discards.push(card);
 	//add to message, hcarlie discarded a card.color, card.number
 	dealCardToPlayer(whosTurn);
 	nextTurn();
@@ -64,11 +67,13 @@ module.exports.getPlayerGameState = function(playerid){
 	partialGame.bombs = game.bombs;
 	partialGame.cardsInDeck = game.deck.length;
 	partialGame.players = [];
+	partialGame.lastMove = game.lastMove;
 	console.log(game.players);
 	for(var player of game.players){
 		let partialPlayer = {
 			name : player.name,
-			hand : []
+			hand : [],
+			lastMove : player.lastMove
 		};
 		for(const c of player.hand){
 			let card = {
@@ -92,7 +97,7 @@ module.exports.getPlayerGameState = function(playerid){
 	return partialGame;
 };
 
-module.exports.adviseColor = function(advisor, to, colorOrNum){
+module.exports.advise = function(advisor, to, colorOrNum){
 	if(game.players[game.whosTurn].id !== advisor){
 		console.error("Tried to advise off-turn");
 		throw "Cannot give advice out of turn";
@@ -105,6 +110,8 @@ module.exports.adviseColor = function(advisor, to, colorOrNum){
 		console.error("Tried to give advice with no tokens");
 		throw "Cannot give advice without tokens";
 	}
+	game.players[game.whosTurn].lastMove = ["Advise", game.players[to].name, colorOrNum];
+	game.lastMove = ["Advise", game.players[to].name, colorOrNum, game.players[game.whosTurn].name];
 	game.advice--;
 	const adviceCards = game.players[to].hand;
 	for(let card of adviceCards){
@@ -176,6 +183,7 @@ module.exports.createGame = function ({ playerNames }) {
 
 	game.advice = 8;
 	game.bombs = 3;
+	game.lastMove = undefined;
 
 	//games with 4,5 players have 4 cards, otherwise 5 cards
 	const handSize = playerNames.length < 4 ? 5 : 4;
@@ -185,7 +193,8 @@ module.exports.createGame = function ({ playerNames }) {
 		return {
 			name: p,
 			id: Math.floor((Math.random() + (i + 1)) * 100000), //player 1 gets a random id between 100000 and 200000
-			hand: game.deck.splice(0, handSize)
+			hand: game.deck.splice(0, handSize),
+			lastMove : undefined
 		};
 	});
 
@@ -245,18 +254,24 @@ module.exports.play = function(playerId, cardId){
 		game.played[card.color]=card.number;
 		//card was a 5, give them advice
 		if(card.number === 5 && game.advice < 8) game.advice++;
+		whosTurn.lastMove = ["Play", true, card];
+		game.lastMove = ["Play", true, card, game.players[game.whosTurn].name];
 		dealCardToPlayer(whosTurn);
 		nextTurn();
 		return {success: true, reason: 'card played'};
 	} else {
 		game.discards.push(card);
 		game.bombs--;
+		whosTurn.lastMove = ["Play", false, card];
+		game.lastMove = ["Play", false, card, game.players[game.whosTurn].name];
 		if(game.bombs === 0){
 			//end of game
 			game.over = true;
 			return { success: 'false', reason: 'card did not play' };
 		}
 		else {
+			whosTurn.lastMove = ["Play", false, card];
+			game.lastMove = ["Play", false, card, game.players[game.whosTurn].name];
 			dealCardToPlayer(whosTurn);
 			nextTurn();
 			return { success: 'false', reason: 'card did not play' };
